@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  pirate_walletd:
+    restart: unless-stopped
+    container_name: pirate_walletd
+    image: hhanh01/pirate_btcpay_walletd
+    entrypoint: "./walletd"
+    environment:
+      RUST_LOG: info
+      BTCPAYSERVER_starting_height: ${ARRR_STARTING_HEIGHT}
+      BTCPAYSERVER_fvk: ${ARRR_FVK}
+      BTCPAYSERVER_lwd_url: ${ARRR_LWD:-https://lightd1.pirate.black:9067}
+    expose:
+      - "8000"
+    volumes:
+      - "arrr_wallet:/wallet"
+  btcpayserver:
+    environment:
+      BTCPAY_CHAINS: "arrr"
+      BTCPAY_ARRR_DAEMON_URI: "http://walletd:8000"
+      BTCPAY_ARRR_WALLET_DAEMON_URI: "http://walletd:8000"
+      BTCPAY_ARRR_WALLET_DAEMON_WALLETDIR: "/"
+    ports:
+      - 14142:14142
+volumes:
+  arrr_wallet:
