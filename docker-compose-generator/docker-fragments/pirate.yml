@@ -10,7 +10,7 @@ services:
       RUST_LOG: info
       BTCPAYSERVER_starting_height: ${ARRR_STARTING_HEIGHT}
       BTCPAYSERVER_fvk: ${ARRR_FVK}
-      BTCPAYSERVER_lwd_url: ${ARRR_LWD:-https://lightd1.pirate.black:9067}
+      BTCPAYSERVER_lwd_url: ${ARRR_LWD:-https://lightd1.pirate.black:443}
     expose:
       - "8000"
     volumes:
