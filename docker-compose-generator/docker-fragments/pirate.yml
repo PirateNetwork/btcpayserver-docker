@@ -4,13 +4,22 @@ services:
   pirate_walletd:
     restart: unless-stopped
     container_name: pirate_walletd
-    image: hhanh01/pirate_btcpay_walletd
-    entrypoint: "./walletd"
+    image: piratenetwork/pirate-btcpay-walletd
     environment:
       RUST_LOG: info
       BTCPAYSERVER_starting_height: ${ARRR_STARTING_HEIGHT}
-      BTCPAYSERVER_fvk: ${ARRR_FVK}
-      BTCPAYSERVER_lwd_url: ${ARRR_LWD:-https://lightd1.pirate.black:443}
+      BTCPAYSERVER_sapling_fvk: ${ARRR_SAPLING_FVK}
+      BTCPAYSERVER_ironwood_fvk: ${ARRR_IRONWOOD_FVK}
+      BTCPAYSERVER_storage_passphrase: ${ARRR_WALLET_STORAGE_PASSPHRASE}
+      # Comma-separated, priority order - failover/switch-back across these
+      # is automatic (see pirate-btcpay-walletd/src/failover.rs).
+      BTCPAYSERVER_lwd_urls: ${ARRR_LWD:-https://lightd1.pirate.black:443,https://64.23.167.130:9067}
+      # Transport for reaching the lwd URLs above: direct (default), tor,
+      # i2p, or socks5 (also set ARRR_TUNNEL_SOCKS5_URL). Set ARRR_TUNNEL_MODE
+      # to connect via lightwalletd's Tor/I2P endpoints instead of clearnet.
+      BTCPAYSERVER_tunnel_mode: ${ARRR_TUNNEL_MODE:-direct}
+      BTCPAYSERVER_tunnel_socks5_url: ${ARRR_TUNNEL_SOCKS5_URL:-}
+      BTCPAYSERVER_db_dir: /wallet
     expose:
       - "8000"
     volumes:
