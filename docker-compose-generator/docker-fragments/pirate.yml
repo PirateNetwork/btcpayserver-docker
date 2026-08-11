@@ -13,7 +13,7 @@ services:
       BTCPAYSERVER_storage_passphrase: ${ARRR_WALLET_STORAGE_PASSPHRASE}
       # Comma-separated, priority order - failover/switch-back across these
       # is automatic (see pirate-btcpay-walletd/src/failover.rs).
-      BTCPAYSERVER_lwd_urls: ${ARRR_LWD:-https://lightd1.pirate.black:443,https://64.23.167.130:9067}
+      BTCPAYSERVER_lwd_urls: ${ARRR_LWD:-https://lightd1.pirate.black:443,http://64.23.167.130:9067}
       # Transport for reaching the lwd URLs above: direct (default), tor,
       # i2p, or socks5 (also set ARRR_TUNNEL_SOCKS5_URL). Set ARRR_TUNNEL_MODE
       # to connect via lightwalletd's Tor/I2P endpoints instead of clearnet.
